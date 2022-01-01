@@ -1,4 +1,4 @@
-# st-option-menu
+# streamlit-option-menu
 ![](./img/menu.png)
 
 streamlit-option-menu is a simple Streamlit component that allows users to select a single item from a list of options in a menu.
@@ -28,6 +28,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 with st.sidebar:
-    selected = option_menu("Main Menu", ["Home", 'Settings'], icons=['house', 'gear'], menu_icon="cast", default_index=1)
+    selected = option_menu("Main Menu", ["Home", 'Settings'], 
+        icons=['house', 'gear'], menu_icon="cast", default_index=1)
     selected
 ```
