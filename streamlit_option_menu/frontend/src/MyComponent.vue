@@ -8,11 +8,13 @@
             <hr>
             <ul href="#" class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item" v-for="(option,i) in args.options" :key="option">
-                    <a href="#" class="nav-link" :class="{active: i == selectedIndex}" 
+                    <hr v-if="option === '---'">
+                    <a v-else href="#" class="nav-link" :class="{active: i == selectedIndex}" 
                     @click="onClicked(i, option)" aria-current="page">
                         <i class="icon" :class="icons[i]"></i>
                         {{option}}
                     </a>
+                    
                 </li>
             </ul>
         </div>

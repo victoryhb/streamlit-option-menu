@@ -16,10 +16,11 @@ pip install streamlit-option-menu
 ## Parameters
 The `option_menu` function accepts the following parameters:
 - menu_title (required): the title of the menu
-- options (required): the array of (string) options to display in the menu
+- options (required): array of (string) options to display in the menu; set an option to "---" if you want to insert a section separator
 - default_index (optional, default=0): the index of the selected option by default
 - menu_icon (optional, default="menu-up"): name of the [bootstrap-icon](https://icons.getbootstrap.com/) to be used for the menu title
-- icons (optional, default=["caret-right"]): array of [bootstrap-icon](https://icons.getbootstrap.com/) names to be used for each option; its length should be equal to the length of options;
+- icons (optional, default=["caret-right"]): array of [bootstrap-icon](https://icons.getbootstrap.com/) names to be used for each option; its length should be equal to the length of options
+
 The function returns the (string) option currently selected
 
 ## Example
