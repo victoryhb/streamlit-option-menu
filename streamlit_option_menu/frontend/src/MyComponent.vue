@@ -1,7 +1,7 @@
 <template>
     <div class="menu">
         <div class="container d-flex flex-column flex-shrink-0 p-3">
-            <a href="#" class="d-flex align-items-center mb-md-0 me-md-auto link-dark text-decoration-none">
+            <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none">
                 <i class="icon" :class="menuIcon" style="font-size:3rem;"></i>
                 <span class="fs-4">{{menuTitle}}</span>
             </a>
@@ -81,17 +81,23 @@ export default {
    border-radius: 0.5rem;
 }
 
-.menu .nav-link {
+.menu-title, .menu .nav-link, .menu .nav-item, hr {
     color: var(--text-color);
+}
+
+.nav-link.active {
+    color: white;
+}
+
+.menu .nav-link {
     /* box-shadow: 0 0px 0.2rem #aaa; */
     margin-bottom: 0.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
-.menu .nav-item .nav-link.active {
+.menu .nav-item .nav-link.active{
     background-color: var(--primary-color);
-    color: white;
 }
 
 .nav-link.active, .nav-link.active+.icon {
