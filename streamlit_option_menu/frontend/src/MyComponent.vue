@@ -2,11 +2,11 @@
     <div class="menu">
         <div class="container d-flex flex-column flex-shrink-0 p-3">
             <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none">
-                <i class="icon" :class="menuIcon" style="font-size:3rem;"></i>
-                <span class="fs-4">{{menuTitle}}</span>
+                <i class="icon" :class="menuIcon"></i>
+                <span>{{menuTitle}}</span>
             </a>
             <hr>
-            <ul href="#" class="nav nav-pills flex-column mb-auto">
+            <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item" v-for="(option,i) in args.options" :key="option">
                     <hr v-if="option === '---'">
                     <a v-else href="#" class="nav-link" :class="{active: i == selectedIndex}" 
@@ -79,6 +79,19 @@ export default {
 .menu .container {
    background-color: var(--secondary-background-color);
    border-radius: 0.5rem;
+}
+
+.menu-title {
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+}
+
+.menu-title span, .menu-title .icon {
+    font-size: 1.5rem;
+}
+
+.menu-title .icon {
+    margin-right: 0.75rem;
 }
 
 .menu-title, .menu .nav-link, .menu .nav-item, hr {
