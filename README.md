@@ -1,5 +1,6 @@
 # streamlit-option-menu
 ![](./img/menu.png)
+![](./img/horizontal_menu.png)
 
 streamlit-option-menu is a simple Streamlit component that allows users to select a single item from a list of options in a menu.
 It is similar in function to st.selectbox(), except that:
@@ -15,11 +16,12 @@ pip install streamlit-option-menu
 
 ## Parameters
 The `option_menu` function accepts the following parameters:
-- menu_title (required): the title of the menu
-- options (required): array of (string) options to display in the menu; set an option to "---" if you want to insert a section separator
+- menu_title (required): the title of the menu; pass None to hide the title
+- options (required): list of (string) options to display in the menu; set an option to "---" if you want to insert a section separator
 - default_index (optional, default=0): the index of the selected option by default
 - menu_icon (optional, default="menu-up"): name of the [bootstrap-icon](https://icons.getbootstrap.com/) to be used for the menu title
-- icons (optional, default=["caret-right"]): array of [bootstrap-icon](https://icons.getbootstrap.com/) names to be used for each option; its length should be equal to the length of options
+- icons (optional, default=["caret-right"]): list of [bootstrap-icon](https://icons.getbootstrap.com/) names to be used for each option; its length should be equal to the length of options
+- orientation (optional, default="vertical"): "vertical" or "horizontal"; whether to display the menu vertically or horizontally
 
 The function returns the (string) option currently selected
 
@@ -32,4 +34,10 @@ with st.sidebar:
     selected = option_menu("Main Menu", ["Home", 'Settings'], 
         icons=['house', 'gear'], menu_icon="cast", default_index=1)
     selected
+
+# horizontal Menu
+selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
+    icons=['house', 'cloud-upload', "list-task", 'gear'], 
+    menu_icon="cast", default_index=0, orientation="horizontal")
+    selected2
 ```

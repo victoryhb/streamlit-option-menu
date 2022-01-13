@@ -1,15 +1,17 @@
 <template>
     <div class="menu">
-        <div class="container d-flex flex-column flex-shrink-0 p-3">
-            <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none">
-                <i class="icon" :class="menuIcon"></i>
-                <span>{{menuTitle}}</span>
-            </a>
+        <div class="container d-flex flex-column flex-shrink-0" :class="{'p-3': !isHorizontal, 'p-h':isHorizontal}">
+            <template v-if="menuTitle">
+                <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none">
+                    <i class="icon" :class="menuIcon"></i>
+                    <span>{{menuTitle}}</span>
+                </a>
             <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
+            </template>
+            <ul class="nav nav-pills mb-auto" :class="{'flex-column': !isHorizontal, 'nav-justified': isHorizontal}">
                 <li class="nav-item" v-for="(option,i) in args.options" :key="option">
                     <hr v-if="option === '---'">
-                    <a v-else href="#" class="nav-link" :class="{active: i == selectedIndex}" 
+                    <a v-else href="#" class="nav-link" :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}" 
                     @click="onClicked(i, option)" aria-current="page">
                         <i class="icon" :class="icons[i]"></i>
                         {{option}}
@@ -39,7 +41,8 @@ export default {
     setup(props) {
         useStreamlit() // lifecycle hooks for automatic Streamlit resize
 
-        const menuTitle = ref(props.args.menuTitle || "Menu")
+        const menuTitle = ref(props.args.menuTitle)
+        const isHorizontal = props.args.orientation == "horizontal"
         const menuIcon = ref(props.args.menuIcon || "bi-menu-up")
         menuIcon.value = getFullIconName(menuIcon.value)
         const icons = ref(props.args.icons || [])
@@ -61,6 +64,7 @@ export default {
             menuIcon,
             icons,
             onClicked,
+            isHorizontal
         }
     },
 }
@@ -73,7 +77,7 @@ export default {
 }
 
 .menu hr {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .menu .container {
@@ -104,9 +108,21 @@ export default {
 
 .menu .nav-link {
     /* box-shadow: 0 0px 0.2rem #aaa; */
-    margin-bottom: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+}
+
+.menu .nav-link-horizontal {
+    /* margin-top: 0.25rem;
+    margin-bottom: 0.25rem; */
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.p-h {
+    padding: 0.5rem 0.75rem;
 }
 
 .menu .nav-item .nav-link.active{

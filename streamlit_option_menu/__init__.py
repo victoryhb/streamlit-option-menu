@@ -34,10 +34,10 @@ else:
 # output value, and add a docstring for users.
 
 
-def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, key=None):
+def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, orientation="vertical", key=None):
     component_value = _component_func(options=options, 
                 key=key, defaultIndex=default_index, icons=icons, menuTitle=menu_title, 
-                menuIcon=menu_icon, default=options[default_index])
+                menuIcon=menu_icon, default=options[default_index], orientation=orientation)
     return component_value
 
 # Create a second instance of our component whose `name` arg will vary
@@ -53,3 +53,7 @@ if __name__ == "__main__":
     with st.sidebar:
         selected = option_menu("Main Menu", ["Home", "Upload", "Tasks", 'Settings'], 
         icons=['house', 'cloud-upload', "list-task", 'gear'], menu_icon="cast", default_index=1)
+
+    selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
+        icons=['house', 'cloud-upload', "list-task", 'gear'], 
+        menu_icon="cast", default_index=0, orientation="horizontal")
