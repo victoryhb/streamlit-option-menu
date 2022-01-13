@@ -126,6 +126,10 @@ export default {
     padding: 0.5rem 0.75rem;
 }
 
+.flex-column {
+    padding-top: 0.25rem;
+}
+
 .menu .nav-item .nav-link.active{
     background-color: var(--primary-color);
 }
