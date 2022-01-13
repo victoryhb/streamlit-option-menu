@@ -1,6 +1,6 @@
 <template>
     <div class="menu">
-        <div class="container d-flex flex-column flex-shrink-0" :class="{'p-3': !isHorizontal, 'p-h':isHorizontal}">
+        <div class="container d-flex flex-column flex-shrink-0" :class="{'p-3': !isHorizontal, 'p-h':isHorizontal, 'nav-justified': isHorizontal}">
             <template v-if="menuTitle">
                 <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none">
                     <i class="icon" :class="menuIcon"></i>
@@ -77,6 +77,7 @@ export default {
 }
 
 .menu hr {
+    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
