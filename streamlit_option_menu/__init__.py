@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 
 import os
 
-_RELEASE = True
+_RELEASE = False
 
 # Declare a Streamlit component. `declare_component` returns a function
 # that is used to create instances of the component. We're naming this
@@ -34,10 +34,12 @@ else:
 # output value, and add a docstring for users.
 
 
-def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, orientation="vertical", key=None):
+def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, orientation="vertical",
+                styles=None, key=None):
     component_value = _component_func(options=options, 
                 key=key, defaultIndex=default_index, icons=icons, menuTitle=menu_title, 
-                menuIcon=menu_icon, default=options[default_index], orientation=orientation)
+                menuIcon=menu_icon, default=options[default_index], 
+                orientation=orientation, styles=styles)
     return component_value
 
 # Create a second instance of our component whose `name` arg will vary
@@ -57,3 +59,17 @@ if __name__ == "__main__":
     selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
         icons=['house', 'cloud-upload', "list-task", 'gear'], 
         menu_icon="cast", default_index=0, orientation="horizontal")
+
+    selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'], 
+        icons=['house', 'cloud-upload', "list-task", 'gear'], 
+        menu_icon="cast", default_index=0, orientation="horizontal",
+        styles={
+            "container": {"padding": "0!important", "background-color": "#fafafa"},
+            "icon": {"color": "orange", "font-size": "25px"}, 
+            "nav-link": {"font-size": "25px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+            "nav-link-selected": {"background-color": "green"},
+        }
+    )
+
+    with st.expander("tst"):
+        st.write(selected)

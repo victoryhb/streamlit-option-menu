@@ -1,28 +1,33 @@
 <template>
     <div class="menu">
-        <div class="container d-flex flex-column flex-shrink-0" :class="{'p-3': !isHorizontal, 'p-h':isHorizontal, 'nav-justified': isHorizontal}">
+        <div class="container-xxl d-flex flex-column flex-shrink-0" :class="{'p-3': !isHorizontal, 'p-h':isHorizontal, 'nav-justified': isHorizontal}" :style="styleObjectToString(styles['container'])">
             <template v-if="menuTitle">
-                <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none">
-                    <i class="icon" :class="menuIcon"></i>
+                <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none"
+                :style="styleObjectToString(styles['menu-title'])"
+                >
+                    <i class="icon" :class="menuIcon" :style="styleObjectToString(styles['menu-icon'])"></i>
                     <span>{{menuTitle}}</span>
                 </a>
             <hr>
             </template>
-            <ul class="nav nav-pills mb-auto" :class="{'flex-column': !isHorizontal, 'nav-justified': isHorizontal}">
-                <li class="nav-item" v-for="(option,i) in args.options" :key="option">
-                    <hr v-if="option === '---'">
+            <ul class="nav nav-pills mb-auto" :class="{'flex-column': !isHorizontal, 'nav-justified': isHorizontal}"
+            :style="styleObjectToString(styles['nav'])"
+            >
+                <li class="nav-item" v-for="(option,i) in args.options" :key="option"
+                :style="styleObjectToString(styles['nav-item'])"
+                >
+                    <hr :class="{vr: !isHorizontoal}" v-if="option === '---'" :style="styleObjectToString(styles['separator'])">
                     <a v-else href="#" class="nav-link" :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}" 
-                    @click="onClicked(i, option)" aria-current="page">
-                        <i class="icon" :class="icons[i]"></i>
+                    @click="onClicked(i, option)" aria-current="page" 
+                    :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)">
+                        <i class="icon" :class="icons[i]" :style="styleObjectToString(styles['icon'])"></i>
                         {{option}}
                     </a>
-                    
                 </li>
             </ul>
         </div>
     </div>
 </template>
-
 <script>
 import { ref } from "vue"
 import { Streamlit } from "streamlit-component-lib"
@@ -57,13 +62,28 @@ export default {
             selectedIndex.value = index
             Streamlit.setComponentValue(option)
         }
-
+        const styleObjectToString = (obj, condition) => {
+            if (typeof condition === "undefined") {
+                condition = true
+            }
+            if (!condition) {
+                return ""
+            }
+            let styleString = ""
+            for (const key in obj) {
+                styleString += `${key}:${obj[key]};`
+            }
+            return styleString
+        }
+        const styles = ref(props.args.styles || {});
         return {
             selectedIndex,
             menuTitle,
             menuIcon,
             icons,
+            styles,
             onClicked,
+            styleObjectToString,
             isHorizontal
         }
     },
@@ -81,7 +101,7 @@ export default {
     margin-bottom: 0.5rem;
 }
 
-.menu .container {
+.menu .container-xxl {
    background-color: var(--secondary-background-color);
    border-radius: 0.5rem;
 }
@@ -105,6 +125,14 @@ export default {
 
 .nav-link.active {
     color: white;
+}
+
+.nav-link:hover {
+    background-color: var(--hover-color);
+}
+
+.nav-link-hover:hover {
+    background-color: inherit;
 }
 
 .menu .nav-link {
@@ -138,4 +166,8 @@ export default {
     font-weight: 900;
 }
 
+.vr {
+    width: 1px; 
+    height: 80%;
+}
 </style>
