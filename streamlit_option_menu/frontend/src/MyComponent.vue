@@ -16,7 +16,7 @@
                 <li class="nav-item" v-for="(option,i) in args.options" :key="option"
                 :style="styleObjectToString(styles['nav-item'])"
                 >
-                    <hr :class="{vr: !isHorizontoal}" v-if="option === '---'" :style="styleObjectToString(styles['separator'])">
+                    <hr :class="{vr: isHorizontal}" v-if="option === '---'" :style="styleObjectToString(styles['separator'])">
                     <a v-else href="#" class="nav-link" :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}" 
                     @click="onClicked(i, option)" aria-current="page" 
                     :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)">

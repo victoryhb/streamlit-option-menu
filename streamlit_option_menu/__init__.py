@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 
 import os
 
-_RELEASE = False
+_RELEASE = True
 
 # Declare a Streamlit component. `declare_component` returns a function
 # that is used to create instances of the component. We're naming this
@@ -53,11 +53,11 @@ def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None
 if __name__ == "__main__":
     st.set_page_config(page_title="Option Menu", layout="wide")
     with st.sidebar:
-        selected = option_menu("Main Menu", ["Home", "Upload", "Tasks", 'Settings'], 
-        icons=['house', 'cloud-upload', "list-task", 'gear'], menu_icon="cast", default_index=1)
+        selected = option_menu("Main Menu", ["Home", "Upload","---", "Tasks", 'Settings'], 
+        icons=['house', 'cloud-upload', None, "list-task", 'gear'], menu_icon="cast", default_index=1)
 
-    selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
-        icons=['house', 'cloud-upload', "list-task", 'gear'], 
+    selected2 = option_menu(None, ["Home", "Upload", "---", "Tasks", 'Settings'], 
+        icons=['house', 'cloud-upload', None, "list-task", 'gear'], 
         menu_icon="cast", default_index=0, orientation="horizontal")
 
     selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'], 
@@ -70,6 +70,3 @@ if __name__ == "__main__":
             "nav-link-selected": {"background-color": "green"},
         }
     )
-
-    with st.expander("tst"):
-        st.write(selected)
