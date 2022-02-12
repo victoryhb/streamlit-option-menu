@@ -6,7 +6,7 @@
                 :style="styleObjectToString(styles['menu-title'])"
                 >
                     <i class="icon" :class="menuIcon" :style="styleObjectToString(styles['menu-icon'])"></i>
-                    <span>{{menuTitle}}</span>
+                    {{menuTitle}}
                 </a>
             <hr>
             </template>
@@ -111,7 +111,7 @@ export default {
     margin-right: 0.75rem;
 }
 
-.menu-title span, .menu-title .icon {
+.menu-title, .menu-title .icon {
     font-size: 1.5rem;
 }
 
