@@ -76,12 +76,10 @@ export default {
             return styleString
         }
         const styles = ref(props.args.styles || {});
-        const manualSelect = ref(props.args.manualSelect || NaN)
-
-
-        
+        const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
         
         const triggerMenuClick = (index) => {
+            console.log("chosen index is: ", index)
             if (index >= 0 && index < props.args.options.length) {
                 onClicked(index, props.args.options[index]);
             } else {
@@ -89,9 +87,10 @@ export default {
             }
         }
 
-        if (!isNaN(manualSelect.value)) {
-            triggerMenuClick(manualSelect.value)
+        if (!isNaN(manualSelect) && manualSelect !== selectedIndex.value) {
+            triggerMenuClick(manualSelect);
         }
+        
         return {
             triggerMenuClick,
             selectedIndex,
