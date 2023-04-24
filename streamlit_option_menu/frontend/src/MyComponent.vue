@@ -76,7 +76,24 @@ export default {
             return styleString
         }
         const styles = ref(props.args.styles || {});
+        const manualSelect = ref(props.args.manualSelect || NaN)
+
+
+        
+        
+        const triggerMenuClick = (index) => {
+            if (index >= 0 && index < props.args.options.length) {
+                onClicked(index, props.args.options[index]);
+            } else {
+                console.warn('Invalid index for triggerMenuClick');
+            }
+        }
+
+        if (!isNaN(manualSelect.value)) {
+            triggerMenuClick(manualSelect.value)
+        }
         return {
+            triggerMenuClick,
             selectedIndex,
             menuTitle,
             menuIcon,

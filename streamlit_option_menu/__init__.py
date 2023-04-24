@@ -35,11 +35,11 @@ else:
 
 
 def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, orientation="vertical",
-                styles=None, key=None):
+                styles=None, manual_select=None, key=None):
     component_value = _component_func(options=options, 
                 key=key, defaultIndex=default_index, icons=icons, menuTitle=menu_title, 
                 menuIcon=menu_icon, default=options[default_index], 
-                orientation=orientation, styles=styles)
+                orientation=orientation, styles=styles, manualSelect=manual_select)
     return component_value
 
 # Create a second instance of our component whose `name` arg will vary
