@@ -40,9 +40,7 @@ The function returns the (string) option currently selected
 ### Manual Selection
 This option was added to allow the user to manually move to a specific option in the menu. This could be useful when the user wants to move to another option automatically after finishing with one option (for example, if settings are approved, then move back to the main option).
 
-To use this option, you need to pass the index of the desired option as `manual_select`.
-
-<br>**Notice** - This option behaves like a button. This means that you should only pass `manual_select` once when you want to select the option, and not keep it as a constant value in your menu creation call (see example below).
+To use this option, you need to pass the index of the desired option as `manual_select`. **Notice**: This option behaves like a button. This means that you should only pass `manual_select` once when you want to select the option, and not keep it as a constant value in your menu creation call (see example below).
 
 
 ## Examples
