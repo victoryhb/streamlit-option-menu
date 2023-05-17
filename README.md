@@ -34,8 +34,16 @@ The `option_menu` function accepts the following parameters:
     * "nav-link-selected": the &lt;a> element containing the text of the selected option
     * "icon": the icon next to each option
     * "separator": the &lt;hr> element separating the options
-
+- manual_select: Pass to manually change the menu item selection. 
 The function returns the (string) option currently selected
+
+### Manual Selection
+This option was added in order to let the user manually move to a specific option in the menu. This could come in handy where when finished with one option and want to move the user automatically to another option (For example if approved setings, then  move back to main option)
+
+In order to use this option, you need to pass the index of the wanted option as a `manual_select`.
+
+<br>**Notice** -  This acts like a button, meaning you should only pass the manual_select once when wanting to "click" the option, and not keep it as a constant value to your menu creation call (see example below).
+
 
 ## Examples
 ```
@@ -65,4 +73,17 @@ selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'],
         "nav-link-selected": {"background-color": "green"},
     }
 )
+
+# 4. Manual Item Selection
+if st.session_state.get('switch_button', False):
+    st.session_state['menu_option'] = (st.session_state.get('menu_option',0) + 1) % 4
+    manual_select = st.session_state['menu_option']
+else:
+    manual_select = None
+    
+selected4 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
+    icons=['house', 'cloud-upload', "list-task", 'gear'], 
+    orientation="horizontal", manual_select=manual_select, key='menu_4')
+st.button(f"Move to Next {st.session_state.get('menu_option',1)}", key='switch_button')
+selected4
 ```
