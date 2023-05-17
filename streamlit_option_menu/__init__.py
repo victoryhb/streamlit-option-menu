@@ -35,11 +35,30 @@ else:
 
 
 def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, orientation="vertical",
-                styles=None, key=None):
+                styles=None, manual_select=None, key=None):
+    """_summary_
+
+    Args:
+        menu_title (_type_): Title of the menu
+        options (_type_): The options to present
+        default_index (int, optional): Default index to start on. Defaults to 0.
+        menu_icon (_type_, optional): Add a menu Icon. Defaults to None.
+        icons (_type_, optional): Add icons for the options. Defaults to None.
+        orientation (str, optional): Horizontal or Vertical. Defaults to "vertical".
+        styles (_type_, optional): You can add a css style here. Defaults to None.
+        manual_select (_type_, optional): An index to select. If passed, will change current selection to the passsed.
+        key (_type_, optional): The component key. Defaults to None.
+
+    Returns:
+        str: The selected option
+    """
+    if manual_select is not None and key is None:  
+        default_index = manual_select
+        
     component_value = _component_func(options=options, 
                 key=key, defaultIndex=default_index, icons=icons, menuTitle=menu_title, 
                 menuIcon=menu_icon, default=options[default_index], 
-                orientation=orientation, styles=styles)
+                orientation=orientation, styles=styles, manualSelect=manual_select)
     return component_value
 
 # Create a second instance of our component whose `name` arg will vary

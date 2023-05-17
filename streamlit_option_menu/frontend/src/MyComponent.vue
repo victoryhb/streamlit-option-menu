@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { Streamlit } from "streamlit-component-lib"
 import { useStreamlit } from "./streamlit"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -76,7 +76,29 @@ export default {
             return styleString
         }
         const styles = ref(props.args.styles || {});
+        // const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
+        
+        const triggerMenuClick = (index) => {
+            console.log("chosen index is: ", index)
+            if (index >= 0 && index < props.args.options.length) {
+                onClicked(index, props.args.options[index]);
+            } else {
+                console.warn('Invalid index for triggerMenuClick');
+            }
+        }
+
+
+        watch(
+            () => props.args.manualSelect,
+            (newClickPos, oldClickPos) => {
+                if (newClickPos !== undefined && newClickPos !== null && newClickPos !== oldClickPos) {
+                onClicked(newClickPos, props.args.options[newClickPos])
+                }
+            }
+        )
+
         return {
+            triggerMenuClick,
             selectedIndex,
             menuTitle,
             menuIcon,
