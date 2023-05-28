@@ -38,11 +38,9 @@ The `option_menu` function accepts the following parameters:
 The function returns the (string) option currently selected
 
 ### Manual Selection
-This option was added in order to let the user manually move to a specific option in the menu. This could come in handy where when finished with one option and want to move the user automatically to another option (For example if approved setings, then  move back to main option)
+This option was added to allow the user to manually move to a specific option in the menu. This could be useful when the user wants to move to another option automatically after finishing with one option (for example, if settings are approved, then move back to the main option).
 
-In order to use this option, you need to pass the index of the wanted option as a `manual_select`.
-
-<br>**Notice** -  This acts like a button, meaning you should only pass the manual_select once when wanting to "click" the option, and not keep it as a constant value to your menu creation call (see example below).
+To use this option, you need to pass the index of the desired option as `manual_select`. **Notice**: This option behaves like a button. This means that you should only pass `manual_select` once when you want to select the option, and not keep it as a constant value in your menu creation call (see example below).
 
 
 ## Examples
