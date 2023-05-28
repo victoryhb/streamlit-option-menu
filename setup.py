@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="streamlit-option-menu",
-    version="0.3.3",
+    version="0.3.5",
     author="Victor Yan",
     author_email="victoryhb@163.com",
     description="streamlit-option-menu is a simple Streamlit component that allows users to select a single item from a list of options in a menu.",
