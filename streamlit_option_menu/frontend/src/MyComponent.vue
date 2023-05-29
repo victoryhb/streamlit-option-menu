@@ -58,6 +58,17 @@ export default {
             icons.value[i] = getFullIconName(icons.value[i]);
         }
         const selectedIndex = ref(props.args.defaultIndex)
+
+        const updateIcons = () => {
+        for (let i = 0; i < props.args.options.length; i++) {
+            if (!icons.value[i]) {
+                icons.value[i] = "bi-caret-right";
+            }
+            icons.value[i] = getFullIconName(icons.value[i]);
+            }
+        }
+        updateIcons()
+
         const onClicked = (index, option) => {
             selectedIndex.value = index
             Streamlit.setComponentValue(option)
@@ -87,6 +98,14 @@ export default {
             }
         }
 
+        watch(
+        () => props.args.icons,
+        () => {
+            // reset icons array and then update it
+            icons.value = props.args.icons || []
+            updateIcons()
+            }
+        )
 
         watch(
             () => props.args.manualSelect,
