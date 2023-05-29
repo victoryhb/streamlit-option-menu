@@ -1,6 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
-
+from streamlit_option_menu.streamlit_callback import register_callback
 import os
 
 _RELEASE = True
@@ -35,7 +35,7 @@ else:
 
 
 def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, orientation="vertical",
-                styles=None, manual_select=None, key=None):
+                styles=None, manual_select=None, key=None, on_change=None):
     """_summary_
 
     Args:
@@ -48,10 +48,17 @@ def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None
         styles (_type_, optional): You can add a css style here. Defaults to None.
         manual_select (_type_, optional): An index to select. If passed, will change current selection to the passsed.
         key (_type_, optional): The component key. Defaults to None.
+        on_change (_type_, optional): A callback function to call when the selection changes. Defaults to None. The callback function must accept a single argument, which will be the key of the option menu. You can fetch current selection by calling st.session_state[key]
 
     Returns:
         str: The selected option
     """
+    if on_change is not None:
+        if key is None:
+            st.error("You must pass a key if you want to use the on_change callback for the option menu")
+        else:    
+            register_callback(key, on_change, key)
+    
     if manual_select is not None and key is None:  
         default_index = manual_select
         

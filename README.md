@@ -36,6 +36,9 @@ The `option_menu` function accepts the following parameters:
     * "separator": the &lt;hr> element separating the options
 - manual_select: Pass to manually change the menu item selection. 
 The function returns the (string) option currently selected
+- on_change: A callback that will happen when the selection changes. The callback function should accept one argument "key". You can use it to fetch the value of the menu (see [example 5](#examples))
+
+
 
 ### Manual Selection
 This option was added to allow the user to manually move to a specific option in the menu. This could be useful when the user wants to move to another option automatically after finishing with one option (for example, if settings are approved, then move back to the main option).
@@ -44,7 +47,7 @@ To use this option, you need to pass the index of the desired option as `manual_
 
 
 ## Examples
-```
+```python
 import streamlit as st
 from streamlit_option_menu import option_menu
 
@@ -84,4 +87,14 @@ selected4 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
     orientation="horizontal", manual_select=manual_select, key='menu_4')
 st.button(f"Move to Next {st.session_state.get('menu_option',1)}", key='switch_button')
 selected4
+
+# 5. Add on_change callback
+def on_change(key):
+    selection = st.session_state[key]
+    st.write(f"Selection changed to {selection}")
+    
+selected5 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
+                        icons=['house', 'cloud-upload', "list-task", 'gear'],
+                        on_change=on_change, key='menu_5', orientation="horizontal")
+selected5
 ```
