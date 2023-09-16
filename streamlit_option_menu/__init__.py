@@ -44,7 +44,7 @@ def option_menu(
     manual_select=None,
     key=None,
     on_change=None,
-    disabled: bool=False
+    disabled: bool = False,
 ):
     """_summary_
 
@@ -85,7 +85,7 @@ def option_menu(
         orientation=orientation,
         styles=styles,
         manualSelect=manual_select,
-        disabled=disabled
+        disabled=disabled,
     )
     return component_value
 
