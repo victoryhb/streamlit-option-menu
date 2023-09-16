@@ -34,7 +34,7 @@ The `option_menu` function accepts the following parameters:
     * "nav-link-selected": the &lt;a> element containing the text of the selected option
     * "icon": the icon next to each option
     * "separator": the &lt;hr> element separating the options
-- manual_select: Pass to manually change the menu item selection. 
+- manual_select: Pass to manually change the menu item selection.
 The function returns the (string) option currently selected
 - on_change: A callback that will happen when the selection changes. The callback function should accept one argument "key". You can use it to fetch the value of the menu (see [example 5](#examples))
 
@@ -53,23 +53,23 @@ from streamlit_option_menu import option_menu
 
 # 1. as sidebar menu
 with st.sidebar:
-    selected = option_menu("Main Menu", ["Home", 'Settings'], 
+    selected = option_menu("Main Menu", ["Home", 'Settings'],
         icons=['house', 'gear'], menu_icon="cast", default_index=1)
     selected
 
 # 2. horizontal menu
-selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
-    icons=['house', 'cloud-upload', "list-task", 'gear'], 
+selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
+    icons=['house', 'cloud-upload', "list-task", 'gear'],
     menu_icon="cast", default_index=0, orientation="horizontal")
 selected2
 
 # 3. CSS style definitions
-selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'], 
-    icons=['house', 'cloud-upload', "list-task", 'gear'], 
+selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'],
+    icons=['house', 'cloud-upload', "list-task", 'gear'],
     menu_icon="cast", default_index=0, orientation="horizontal",
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa"},
-        "icon": {"color": "orange", "font-size": "25px"}, 
+        "icon": {"color": "orange", "font-size": "25px"},
         "nav-link": {"font-size": "25px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
         "nav-link-selected": {"background-color": "green"},
     }
@@ -81,9 +81,9 @@ if st.session_state.get('switch_button', False):
     manual_select = st.session_state['menu_option']
 else:
     manual_select = None
-    
-selected4 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
-    icons=['house', 'cloud-upload', "list-task", 'gear'], 
+
+selected4 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
+    icons=['house', 'cloud-upload', "list-task", 'gear'],
     orientation="horizontal", manual_select=manual_select, key='menu_4')
 st.button(f"Move to Next {st.session_state.get('menu_option',1)}", key='switch_button')
 selected4
@@ -92,7 +92,7 @@ selected4
 def on_change(key):
     selection = st.session_state[key]
     st.write(f"Selection changed to {selection}")
-    
+
 selected5 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
                         icons=['house', 'cloud-upload', "list-task", 'gear'],
                         on_change=on_change, key='menu_5', orientation="horizontal")
