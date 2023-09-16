@@ -115,11 +115,11 @@ export default {
         }
 
         watch(
-        () => props.args.icons,
-        () => {
-            // reset icons array and then update it
-            icons.value = props.args.icons || []
-            updateIcons()
+            () => props.args.icons,
+            () => {
+                // reset icons array and then update it
+                icons.value = props.args.icons || []
+                updateIcons()
             }
         )
 
@@ -127,8 +127,17 @@ export default {
             () => props.args.manualSelect,
             (newClickPos, oldClickPos) => {
                 if (newClickPos !== undefined && newClickPos !== null && newClickPos !== oldClickPos) {
-                onClicked(newClickPos, props.args.options[newClickPos])
+                    onClicked(newClickPos, props.args.options[newClickPos])
                 }
+            }
+        )
+
+        watch(
+            () => props.args.disabled,
+            () => {
+                disabled.value = props.args.disabled || false
+                const extraStyles = disabled.value ? disabledStyles : {}
+                styles.value = { ...(props.args.styles || {}), ...extraStyles }
             }
         )
 
