@@ -44,7 +44,7 @@ def option_menu(
     manual_select=None,
     key=None,
     on_change=None,
-    disabled: bool = False,
+    disabled=False,
 ):
     """_summary_
 
@@ -59,6 +59,7 @@ def option_menu(
         manual_select (_type_, optional): An index to select. If passed, will change current selection to the passsed.
         key (_type_, optional): The component key. Defaults to None.
         on_change (_type_, optional): A callback function to call when the selection changes. Defaults to None. The callback function must accept a single argument, which will be the key of the option menu. You can fetch current selection by calling st.session_state[key]
+        disabled (_type_, optional): A boolean that will disable the menu buttons when True. The same as the disabled option on many native streamlit components.
 
     Returns:
         str: The selected option
