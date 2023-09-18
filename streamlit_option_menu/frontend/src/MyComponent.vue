@@ -17,8 +17,8 @@
                 :style="styleObjectToString(styles['nav-item'])"
                 >
                     <hr :class="{vr: isHorizontal}" v-if="option === '---'" :style="styleObjectToString(styles['separator'])">
-                    <a v-else href="javascript:void(0);" class="nav-link" :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}" 
-                    @click="onClicked(i, option)" aria-current="page" 
+                    <a v-else href="javascript:void(0);" class="nav-link" :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}"
+                    @click="onClicked(i, option)" aria-current="page"
                     :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)">
                         <i class="icon" :class="icons[i]" :style="styleObjectToString(styles['icon'])"></i>
                         {{option}}
@@ -46,6 +46,7 @@ export default {
     setup(props) {
         useStreamlit() // lifecycle hooks for automatic Streamlit resize
 
+        const disabled = ref(props.args.disabled)
         const menuTitle = ref(props.args.menuTitle)
         const isHorizontal = props.args.orientation == "horizontal"
         const menuIcon = ref(props.args.menuIcon || "bi-menu-up")
@@ -70,6 +71,8 @@ export default {
         updateIcons()
 
         const onClicked = (index, option) => {
+            if (disabled.value)
+                return
             selectedIndex.value = index
             Streamlit.setComponentValue(option)
         }
@@ -86,9 +89,22 @@ export default {
             }
             return styleString
         }
-        const styles = ref(props.args.styles || {});
+
+        const disabledCursorStyle = { "cursor": "not-allowed" }
+        const disabledStyle = {
+            "color": "rgba(250, 250, 250, 0.4)",
+            "border-color": "rgba(250, 250, 250, 0.2)",
+            ...disabledCursorStyle
+        }
+        const disabledStyles = {
+            "nav-item": disabledStyle,
+            "nav-link": disabledStyle,
+            "nav-link-selected": disabledCursorStyle,
+        }
+        const extraStyles = disabled.value ? disabledStyles : {}
+        const styles = ref({ ...(props.args.styles || {}), ...extraStyles });
         // const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
-        
+
         const triggerMenuClick = (index) => {
             console.log("chosen index is: ", index)
             if (index >= 0 && index < props.args.options.length) {
@@ -99,11 +115,11 @@ export default {
         }
 
         watch(
-        () => props.args.icons,
-        () => {
-            // reset icons array and then update it
-            icons.value = props.args.icons || []
-            updateIcons()
+            () => props.args.icons,
+            () => {
+                // reset icons array and then update it
+                icons.value = props.args.icons || []
+                updateIcons()
             }
         )
 
@@ -111,8 +127,17 @@ export default {
             () => props.args.manualSelect,
             (newClickPos, oldClickPos) => {
                 if (newClickPos !== undefined && newClickPos !== null && newClickPos !== oldClickPos) {
-                onClicked(newClickPos, props.args.options[newClickPos])
+                    onClicked(newClickPos, props.args.options[newClickPos])
                 }
+            }
+        )
+
+        watch(
+            () => props.args.disabled,
+            () => {
+                disabled.value = props.args.disabled || false
+                const extraStyles = disabled.value ? disabledStyles : {}
+                styles.value = { ...(props.args.styles || {}), ...extraStyles }
             }
         )
 
@@ -208,7 +233,7 @@ export default {
 }
 
 .vr {
-    width: 1px; 
+    width: 1px;
     height: 80%;
 }
 </style>
