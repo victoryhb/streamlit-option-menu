@@ -37,6 +37,7 @@ The `option_menu` function accepts the following parameters:
 - manual_select: Pass to manually change the menu item selection.
 The function returns the (string) option currently selected
 - on_change: A callback that will happen when the selection changes. The callback function should accept one argument "key". You can use it to fetch the value of the menu (see [example 5](#examples))
+- disabled: A boolean that will disable the menu buttons when True. The same as the disabled option on many native streamlit components.
 
 
 
