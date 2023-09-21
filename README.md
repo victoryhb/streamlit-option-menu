@@ -98,3 +98,11 @@ selected5 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
                         on_change=on_change, key='menu_5', orientation="horizontal")
 selected5
 ```
+
+
+#### Development
+
+Install python module locally: `pip install -e .`
+
+Build the component frontend and enter the example/test environment:
+`npm run build --prefix ./frontend && TDEBUG=1 ./__init__.py`
