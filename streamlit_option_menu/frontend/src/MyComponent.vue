@@ -21,7 +21,7 @@
                     @click="onClicked(i, option)" aria-current="page"
                     :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)">
                         <i class="icon" :class="icons[i]" :style="styleObjectToString(styles['icon'])"></i>
-                        {{option}}
+                        <p class="nav-link-text" :style="styleObjectToString(styles['nav-link-text'])">{{option}}</p>
                     </a>
                 </li>
             </ul>
@@ -90,19 +90,36 @@ export default {
             return styleString
         }
 
+        // Get user styles and set up state style
+        const userStyles = ref(props.args.styles || {})
         const disabledCursorStyle = { "cursor": "not-allowed" }
-        const disabledStyle = {
-            "color": "rgba(250, 250, 250, 0.4)",
-            "border-color": "rgba(250, 250, 250, 0.2)",
-            ...disabledCursorStyle
-        }
+        const lightGreyText = { "color": "rgba(250, 250, 250, 0.4)" }
+        const greyedText = { "filter": "invert(40%) sepia(4%);" }
+        const fadeBackground = { "filter": "invert(25%) opacity(99%);" }
         const disabledStyles = {
-            "nav-item": disabledStyle,
-            "nav-link": disabledStyle,
+            "nav-item": lightGreyText,
+            "nav-link": { ...disabledCursorStyle, ...fadeBackground },
             "nav-link-selected": disabledCursorStyle,
+            "nav-link-text": greyedText,
         }
-        const extraStyles = disabled.value ? disabledStyles : {}
-        const styles = ref({ ...(props.args.styles || {}), ...extraStyles });
+
+        // Merge the extra styles with users
+        const calcStyles = ( ) => {
+            const extraStyles = disabled.value ? disabledStyles : {}
+            const finalStyles = { ...userStyles.value }
+            for (const elementKey in extraStyles) {
+                if (!(elementKey in finalStyles))
+                    finalStyles[elementKey] = extraStyles[elementKey]
+
+                const cssProps = extraStyles[elementKey]
+                for (const [tag, value] of Object.entries(cssProps))
+                    finalStyles[elementKey][tag] = value
+            }
+            return finalStyles
+        }
+        const finalStyles = calcStyles()
+        const styles = ref(finalStyles);
+
         // const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
 
         const triggerMenuClick = (index) => {
@@ -136,8 +153,7 @@ export default {
             () => props.args.disabled,
             () => {
                 disabled.value = props.args.disabled || false
-                const extraStyles = disabled.value ? disabledStyles : {}
-                styles.value = { ...(props.args.styles || {}), ...extraStyles }
+                styles.value = calcStyles()
             }
         )
 

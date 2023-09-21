@@ -1,4 +1,4 @@
-#!/usr/bin/env -S streamlit run
+#!/usr/bin/env -S streamlit run --server.runOnSave True
 import streamlit as st
 import streamlit.components.v1 as components
 from streamlit_option_menu.streamlit_callback import register_callback
@@ -18,7 +18,6 @@ _RELEASE = os.getenv("TDEBUG", None) or True
 # best practice.
 
 if not _RELEASE:
-    disabled = True
     _component_func = components.declare_component(
         "option_menu",
         url="http://localhost:3001",
@@ -139,4 +138,25 @@ if __name__ == "__main__":
             },
             "nav-link-selected": {"background-color": "green"},
         },
+    )
+
+    disabled = option_menu(
+        "Disabled Menu",
+        ["Home", "Unavailable", "Elsewhere"],
+        icons=["house", "gear", "list-task"],
+        menu_icon="cast",
+        default_index=0,
+        orientation="horizontal",
+        styles={
+            "container": {"padding": "0!important", "background-color": "#fafafa"},
+            "icon": {"color": "orange", "font-size": "25px"},
+            "nav-link": {
+                "font-size": "25px",
+                "text-align": "left",
+                "margin": "0px",
+                "--hover-color": "#eee",
+            },
+            "nav-link-selected": {"background-color": "green"},
+        },
+        disabled=True,
     )
