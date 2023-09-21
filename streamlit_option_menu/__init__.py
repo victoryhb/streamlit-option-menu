@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 from streamlit_option_menu.streamlit_callback import register_callback
 import os
 
-_RELEASE = os.getenv("TDEBUG", None) or True
+_RELEASE = not os.getenv("TDEBUG", None)
 
 # Declare a Streamlit component. `declare_component` returns a function
 # that is used to create instances of the component. We're naming this
