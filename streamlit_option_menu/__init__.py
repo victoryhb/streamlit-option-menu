@@ -140,7 +140,7 @@ if __name__ == "__main__":
         },
     )
 
-    disabled = option_menu(
+    disabled_menu_example = option_menu(
         "Disabled Menu",
         ["Home", "Unavailable", "Elsewhere"],
         icons=["house", "gear", "list-task"],

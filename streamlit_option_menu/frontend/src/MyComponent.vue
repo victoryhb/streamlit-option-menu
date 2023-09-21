@@ -2,24 +2,27 @@
     <div class="menu">
         <div class="container-xxl d-flex flex-column flex-shrink-0" :class="{'p-3': !isHorizontal, 'p-h':isHorizontal, 'nav-justified': isHorizontal}" :style="styleObjectToString(styles['container'])">
             <template v-if="menuTitle">
-                <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none"
-                :style="styleObjectToString(styles['menu-title'])"
+                <a href="#"
+                   class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none"
+                   :style="styleObjectToString(styles['menu-title'])"
                 >
                     <i class="icon" :class="menuIcon" :style="styleObjectToString(styles['menu-icon'])"></i>
                     {{menuTitle}}
                 </a>
             <hr>
             </template>
-            <ul class="nav nav-pills mb-auto" :class="{'flex-column': !isHorizontal, 'nav-justified': isHorizontal}"
-            :style="styleObjectToString(styles['nav'])"
+            <ul class="nav nav-pills mb-auto"
+               :class="{'flex-column': !isHorizontal, 'nav-justified': isHorizontal}"
+               :style="styleObjectToString(styles['nav'])"
             >
                 <li class="nav-item" v-for="(option,i) in args.options" :key="option"
                 :style="styleObjectToString(styles['nav-item'])"
                 >
                     <hr :class="{vr: isHorizontal}" v-if="option === '---'" :style="styleObjectToString(styles['separator'])">
                     <a v-else href="javascript:void(0);" class="nav-link" :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}"
-                    @click="onClicked(i, option)" aria-current="page"
-                    :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)">
+                       @click="onClicked(i, option)" aria-current="page"
+                       :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)"
+                    >
                         <i class="icon" :class="icons[i]" :style="styleObjectToString(styles['icon'])"></i>
                         <p class="nav-link-text" :style="styleObjectToString(styles['nav-link-text'])">{{option}}</p>
                     </a>
@@ -28,6 +31,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import { ref, watch } from "vue"
 import { Streamlit } from "streamlit-component-lib"
@@ -45,6 +49,8 @@ export default {
     props: ["args"], // Arguments that are passed to the plugin in Python are accessible in prop "args"
     setup(props) {
         useStreamlit() // lifecycle hooks for automatic Streamlit resize
+
+        // const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
 
         const disabled = ref(props.args.disabled)
         const menuTitle = ref(props.args.menuTitle)
@@ -76,6 +82,16 @@ export default {
             selectedIndex.value = index
             Streamlit.setComponentValue(option)
         }
+
+        const triggerMenuClick = (index) => {
+            console.log("chosen index is: ", index)
+            if (index >= 0 && index < props.args.options.length) {
+                onClicked(index, props.args.options[index]);
+            } else {
+                console.warn('Invalid index for triggerMenuClick');
+            }
+        }
+
         const styleObjectToString = (obj, condition) => {
             if (typeof condition === "undefined") {
                 condition = true
@@ -119,17 +135,6 @@ export default {
         }
         const finalStyles = calcStyles()
         const styles = ref(finalStyles);
-
-        // const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
-
-        const triggerMenuClick = (index) => {
-            console.log("chosen index is: ", index)
-            if (index >= 0 && index < props.args.options.length) {
-                onClicked(index, props.args.options[index]);
-            } else {
-                console.warn('Invalid index for triggerMenuClick');
-            }
-        }
 
         watch(
             () => props.args.icons,
