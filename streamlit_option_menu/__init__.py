@@ -160,3 +160,28 @@ if __name__ == "__main__":
         },
         disabled=True,
     )
+
+    style_menu_example = option_menu(
+        "Styling",
+        ["Home", "Somewhere"],
+        icons=["house", "gear"],
+        menu_icon="cast",
+        default_index=0,
+        orientation="horizontal",
+        styles={
+            "container": {"padding": "0!important", "background-color": "#fafafa"},
+            "icon": {"color": "orange", "font-size": "25px"}, # Overrides menu-icon and option-icon unless !important
+            "menu-icon": {"color": "purple !important", "font-size": "14px"},
+            "option-icon": {"color": "blue !important", "font-size": "10px !important"},
+            "option-icon-selected": {"color": "lightblue", "font-size": "14px"},
+            "nav-link": {
+                "font-size": "25px",
+                "text-align": "left",
+                "margin": "0px",
+                "--hover-color": "#eee",
+            },
+            "nav-link-selected": {"background-color": "green"},
+            "nav-link-text": {"color": "rgba(100, 100, 100)"},
+            "nav-link-text-selected": {"color": "indigo !important", "filter": "brightness(80%)"},
+        },
+    )
