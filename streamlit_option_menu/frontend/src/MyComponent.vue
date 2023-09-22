@@ -264,4 +264,13 @@ export default {
     width: 1px;
     height: 80%;
 }
+
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link-text {
+    margin: 0;
+}
 </style>

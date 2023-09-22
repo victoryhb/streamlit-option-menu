@@ -173,7 +173,7 @@ if __name__ == "__main__":
             "icon": {"color": "orange", "font-size": "25px"}, # Overrides menu-icon and option-icon unless !important
             "menu-icon": {"color": "purple !important", "font-size": "14px"},
             "option-icon": {"color": "blue !important", "font-size": "10px !important"},
-            "option-icon-selected": {"color": "lightblue", "font-size": "14px"},
+            "option-icon-selected": {"color": "lightblue", "font-size": "50px !important"},
             "nav-link": {
                 "font-size": "25px",
                 "text-align": "left",
