@@ -265,6 +265,10 @@ export default {
     height: 80%;
 }
 
+.nav {
+    align-items: center;
+}
+
 .nav-link {
     display: flex;
     align-items: center;
