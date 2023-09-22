@@ -32,6 +32,7 @@ The `option_menu` function accepts the following parameters:
     * "nav-item": the &lt;li> element containing "nav-link"
     * "nav-link": the &lt;a> element containing the text of each option
     * "nav-link-selected": the &lt;a> element containing the text of the selected option
+    * "nav-link-text": the &lt;p> text-only element contained in any nav-link
     * "icon": the icon next to each option
     * "separator": the &lt;hr> element separating the options
 - manual_select: Pass to manually change the menu item selection.
