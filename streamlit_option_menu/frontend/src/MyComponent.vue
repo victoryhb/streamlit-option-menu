@@ -1,33 +1,43 @@
 <template>
     <div class="menu">
-        <div class="container-xxl d-flex flex-column flex-shrink-0" :class="{'p-3': !isHorizontal, 'p-h':isHorizontal, 'nav-justified': isHorizontal}" :style="styleObjectToString(styles['container'])">
+        <div class="container-xxl d-flex flex-column flex-shrink-0"
+            :class="{'p-3': !isHorizontal, 'p-h':isHorizontal, 'nav-justified': isHorizontal}"
+            :style="styleObjectToString(styles['container'])">
             <template v-if="menuTitle">
-                <a href="#" class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none"
-                :style="styleObjectToString(styles['menu-title'])"
+                <a href="#"
+                   class="menu-title align-items-center mb-md-0 me-md-auto text-decoration-none"
+                   :style="styleObjectToString(styles['menu-title'])"
                 >
-                    <i class="icon" :class="menuIcon" :style="styleObjectToString(styles['menu-icon'])"></i>
+                    <i class="icon" :class="menuIcon" :style="styleObjectToString(styles['icon']) + styleObjectToString(styles['menu-icon'])"></i>
                     {{menuTitle}}
                 </a>
             <hr>
             </template>
-            <ul class="nav nav-pills mb-auto" :class="{'flex-column': !isHorizontal, 'nav-justified': isHorizontal}"
-            :style="styleObjectToString(styles['nav'])"
+            <ul class="nav nav-pills mb-auto"
+               :class="{'flex-column': !isHorizontal, 'nav-justified': isHorizontal}"
+               :style="styleObjectToString(styles['nav'])"
             >
                 <li class="nav-item" v-for="(option,i) in args.options" :key="option"
                 :style="styleObjectToString(styles['nav-item'])"
                 >
                     <hr :class="{vr: isHorizontal}" v-if="option === '---'" :style="styleObjectToString(styles['separator'])">
-                    <a v-else href="javascript:void(0);" class="nav-link" :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}" 
-                    @click="onClicked(i, option)" aria-current="page" 
-                    :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)">
-                        <i class="icon" :class="icons[i]" :style="styleObjectToString(styles['icon'])"></i>
-                        {{option}}
+                    <a v-else href="javascript:void(0);"
+                       class="nav-link"
+                       :class="{active: i == selectedIndex, 'nav-link-horizontal':isHorizontal}"
+                       @click="onClicked(i, option)" aria-current="page"
+                       :style="styleObjectToString(styles['nav-link']) + styleObjectToString(styles['nav-link-selected'], i == selectedIndex)"
+                    >
+                        <i class="icon option-icon" :class="[icons[i], i == selectedIndex ? 'option-icon-selected' : '']"
+                            :style="styleObjectToString(styles['icon']) + styleObjectToString(styles['option-icon']) + styleObjectToString(styles['option-icon-selected'], i == selectedIndex)"></i>
+                        <p class="nav-link-text" :class="[i == selectedIndex ? 'nav-link-text-selected' : '']"
+                            :style="styleObjectToString(styles['nav-link-text']) + styleObjectToString(styles['nav-link-text-selected'], i == selectedIndex)">{{option}}</p>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 </template>
+
 <script>
 import { ref, watch } from "vue"
 import { Streamlit } from "streamlit-component-lib"
@@ -46,6 +56,9 @@ export default {
     setup(props) {
         useStreamlit() // lifecycle hooks for automatic Streamlit resize
 
+        // const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
+
+        const disabled = ref(props.args.disabled)
         const menuTitle = ref(props.args.menuTitle)
         const isHorizontal = props.args.orientation == "horizontal"
         const menuIcon = ref(props.args.menuIcon || "bi-menu-up")
@@ -70,9 +83,21 @@ export default {
         updateIcons()
 
         const onClicked = (index, option) => {
+            if (disabled.value)
+                return
             selectedIndex.value = index
             Streamlit.setComponentValue(option)
         }
+
+        const triggerMenuClick = (index) => {
+            console.log("chosen index is: ", index)
+            if (index >= 0 && index < props.args.options.length) {
+                onClicked(index, props.args.options[index]);
+            } else {
+                console.warn('Invalid index for triggerMenuClick');
+            }
+        }
+
         const styleObjectToString = (obj, condition) => {
             if (typeof condition === "undefined") {
                 condition = true
@@ -86,24 +111,44 @@ export default {
             }
             return styleString
         }
-        const styles = ref(props.args.styles || {});
-        // const manualSelect = props.args.manualSelect === undefined || props.args.manualSelect === null ? NaN : props.args.manualSelect;
-        
-        const triggerMenuClick = (index) => {
-            console.log("chosen index is: ", index)
-            if (index >= 0 && index < props.args.options.length) {
-                onClicked(index, props.args.options[index]);
-            } else {
-                console.warn('Invalid index for triggerMenuClick');
-            }
+
+        // Get user styles and set up state style
+        const userStyles = ref(props.args.styles || {})
+        const disabledCursorStyle = { "cursor": "not-allowed" }
+        const lightGreyText = { "color": "rgba(250, 250, 250, 0.4)" }
+        const greyedText = { "filter": "invert(40%) sepia(4%);" }
+        const fadeBackground = { "filter": "invert(25%) opacity(99%);" }
+        const disabledStyles = {
+            "nav-item": lightGreyText,
+            "nav-link": { ...disabledCursorStyle, ...fadeBackground },
+            "nav-link-selected": disabledCursorStyle,
+            "nav-link-text": greyedText,
         }
 
+        // Merge the extra styles with users
+        const calcStyles = ( ) => {
+            const extraStyles = disabled.value ? disabledStyles : {}
+            const finalStyles = { ...userStyles.value }
+            for (const elementKey in extraStyles) {
+                if (!(elementKey in finalStyles))
+                    finalStyles[elementKey] = extraStyles[elementKey]
+
+                const cssProps = extraStyles[elementKey]
+                for (const [tag, value] of Object.entries(cssProps))
+                    finalStyles[elementKey][tag] = value
+            }
+            console.log("styles", finalStyles)
+            return finalStyles
+        }
+        const finalStyles = calcStyles()
+        const styles = ref(finalStyles);
+
         watch(
-        () => props.args.icons,
-        () => {
-            // reset icons array and then update it
-            icons.value = props.args.icons || []
-            updateIcons()
+            () => props.args.icons,
+            () => {
+                // reset icons array and then update it
+                icons.value = props.args.icons || []
+                updateIcons()
             }
         )
 
@@ -111,8 +156,16 @@ export default {
             () => props.args.manualSelect,
             (newClickPos, oldClickPos) => {
                 if (newClickPos !== undefined && newClickPos !== null && newClickPos !== oldClickPos) {
-                onClicked(newClickPos, props.args.options[newClickPos])
+                    onClicked(newClickPos, props.args.options[newClickPos])
                 }
+            }
+        )
+
+        watch(
+            () => props.args.disabled,
+            () => {
+                disabled.value = props.args.disabled || false
+                styles.value = calcStyles()
             }
         )
 
@@ -208,7 +261,20 @@ export default {
 }
 
 .vr {
-    width: 1px; 
+    width: 1px;
     height: 80%;
+}
+
+.nav {
+    align-items: center;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link-text {
+    margin: 0;
 }
 </style>
