@@ -27,21 +27,16 @@ The `option_menu` function accepts the following parameters:
 - styles (optional, default=None): A dictionary containing the CSS definitions for most HTML elements in the menu, including:
     * "container": the container div of the entire menu
     * "menu-title": the &lt;a> element containing the menu title
-    * "menu-icon": the &lt;i> element containing the icon next to the menu
-    * "nav": the &lt;ul> containing all "nav-item" elements
-    * "nav-item": the &lt;li> element containing "nav-link" for the option item
-    * "nav-link": all &lt;a> elements containing the text and icon of each option item
-    * "nav-link-selected": the &lt;a> element containing the text and icon of the selected option item
-    * "nav-link-text": all &lt;p> text-only element contained in any "nav-link" element
-    * "nav-link-text-selected": the &lt;p> text-only element of the selected option item
-    * "option-icon": all &lt;i> elements containing the icons for each option item
-    * "option-icon-selected": the &lt;i> element containing only the icon for the selected option item
-    * "icon": all icons, the menu icon and every option item icon
+    * "menu-icon": the icon next to the menu title
+    * "nav": the &lt;ul> containing "nav-link"
+    * "nav-item": the &lt;li> element containing "nav-link"
+    * "nav-link": the &lt;a> element containing the text of each option
+    * "nav-link-selected": the &lt;a> element containing the text of the selected option
+    * "icon": the icon next to each option
     * "separator": the &lt;hr> element separating the options
-- manual_select: Pass to manually change the menu item selection.
+- manual_select: Pass to manually change the menu item selection. 
 The function returns the (string) option currently selected
 - on_change: A callback that will happen when the selection changes. The callback function should accept one argument "key". You can use it to fetch the value of the menu (see [example 5](#examples))
-- disabled: A boolean that will disable and grey the menu and options when `True`. The same as the disabled option on many native streamlit components.
 
 
 
@@ -58,23 +53,23 @@ from streamlit_option_menu import option_menu
 
 # 1. as sidebar menu
 with st.sidebar:
-    selected = option_menu("Main Menu", ["Home", 'Settings'],
+    selected = option_menu("Main Menu", ["Home", 'Settings'], 
         icons=['house', 'gear'], menu_icon="cast", default_index=1)
     selected
 
 # 2. horizontal menu
-selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
-    icons=['house', 'cloud-upload', "list-task", 'gear'],
+selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
+    icons=['house', 'cloud-upload', "list-task", 'gear'], 
     menu_icon="cast", default_index=0, orientation="horizontal")
 selected2
 
 # 3. CSS style definitions
-selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'],
-    icons=['house', 'cloud-upload', "list-task", 'gear'],
+selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'], 
+    icons=['house', 'cloud-upload', "list-task", 'gear'], 
     menu_icon="cast", default_index=0, orientation="horizontal",
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa"},
-        "icon": {"color": "orange", "font-size": "25px"},
+        "icon": {"color": "orange", "font-size": "25px"}, 
         "nav-link": {"font-size": "25px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
         "nav-link-selected": {"background-color": "green"},
     }
@@ -86,9 +81,9 @@ if st.session_state.get('switch_button', False):
     manual_select = st.session_state['menu_option']
 else:
     manual_select = None
-
-selected4 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
-    icons=['house', 'cloud-upload', "list-task", 'gear'],
+    
+selected4 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
+    icons=['house', 'cloud-upload', "list-task", 'gear'], 
     orientation="horizontal", manual_select=manual_select, key='menu_4')
 st.button(f"Move to Next {st.session_state.get('menu_option',1)}", key='switch_button')
 selected4
@@ -97,24 +92,9 @@ selected4
 def on_change(key):
     selection = st.session_state[key]
     st.write(f"Selection changed to {selection}")
-
+    
 selected5 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
                         icons=['house', 'cloud-upload', "list-task", 'gear'],
                         on_change=on_change, key='menu_5', orientation="horizontal")
 selected5
 ```
-
-
-#### Development
-
-Install python module locally: `pip install -e .`
-
-Build the component frontend and enter the example/test environment:
-`npm run build --prefix ./frontend && TDEBUG=1 ./__init__.py`
-
-
-OR Watch the component for code changes:
-`npm run serve --prefix ./frontend`
-
-Then enter the example/test environment:
-`TDEBUG=1 ./__init__.py`
