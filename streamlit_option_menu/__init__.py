@@ -1,10 +1,9 @@
-#!/usr/bin/env -S streamlit run
 import streamlit as st
 import streamlit.components.v1 as components
 from streamlit_option_menu.streamlit_callback import register_callback
 import os
 
-_RELEASE = not os.getenv("TDEBUG", None)
+_RELEASE = True
 
 # Declare a Streamlit component. `declare_component` returns a function
 # that is used to create instances of the component. We're naming this
@@ -25,7 +24,8 @@ if not _RELEASE:
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(parent_dir, "frontend/dist")
-    _component_func = components.declare_component("option_menu", path=build_dir)
+    _component_func = components.declare_component(
+        "option_menu", path=build_dir)
 
 # Create a wrapper function for the component. This is an optional
 # best practice - we could simply expose the component function returned by
@@ -34,19 +34,8 @@ else:
 # output value, and add a docstring for users.
 
 
-def option_menu(
-    menu_title,
-    options,
-    default_index=0,
-    menu_icon=None,
-    icons=None,
-    orientation="vertical",
-    styles=None,
-    manual_select=None,
-    key=None,
-    on_change=None,
-    disabled=False,
-):
+def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None, orientation="vertical",
+                styles=None, manual_select=None, key=None, on_change=None):
     """_summary_
 
     Args:
@@ -60,37 +49,24 @@ def option_menu(
         manual_select (_type_, optional): An index to select. If passed, will change current selection to the passsed.
         key (_type_, optional): The component key. Defaults to None.
         on_change (_type_, optional): A callback function to call when the selection changes. Defaults to None. The callback function must accept a single argument, which will be the key of the option menu. You can fetch current selection by calling st.session_state[key]
-        disabled (_type_, optional): A boolean that will disable and grey the menu and options when `True`. The same as the disabled option on many native streamlit components.
 
     Returns:
         str: The selected option
     """
     if on_change is not None:
         if key is None:
-            st.error(
-                "You must pass a key if you want to use the on_change callback for the option menu"
-            )
-        else:
+            st.error("You must pass a key if you want to use the on_change callback for the option menu")
+        else:    
             register_callback(key, on_change, key)
-
-    if manual_select is not None and key is None:
+    
+    if manual_select is not None and key is None:  
         default_index = manual_select
-
-    component_value = _component_func(
-        options=options,
-        key=key,
-        defaultIndex=default_index,
-        icons=icons,
-        menuTitle=menu_title,
-        menuIcon=menu_icon,
-        default=options[default_index],
-        orientation=orientation,
-        styles=styles,
-        manualSelect=manual_select,
-        disabled=disabled,
-    )
+        
+    component_value = _component_func(options=options, 
+                key=key, defaultIndex=default_index, icons=icons, menuTitle=menu_title, 
+                menuIcon=menu_icon, default=options[default_index], 
+                orientation=orientation, styles=styles, manualSelect=manual_select)
     return component_value
-
 
 # Create a second instance of our component whose `name` arg will vary
 # based on a text_input widget.
@@ -103,85 +79,20 @@ def option_menu(
 if __name__ == "__main__":
     st.set_page_config(page_title="Option Menu", layout="wide")
     with st.sidebar:
-        selected = option_menu(
-            "Main Menu",
-            ["Home", "Upload", "---", "Tasks", "Settings"],
-            icons=["house", "cloud-upload", None, "list-task", "gear"],
-            menu_icon="cast",
-            default_index=1,
-        )
+        selected = option_menu("Main Menu", ["Home", "Upload","---", "Tasks", 'Settings'], 
+        icons=['house', 'cloud-upload', None, "list-task", 'gear'], menu_icon="cast", default_index=1)
 
-    selected2 = option_menu(
-        None,
-        ["Home", "Upload", "---", "Tasks", "Settings"],
-        icons=["house", "cloud-upload", None, "list-task", "gear"],
-        menu_icon="cast",
-        default_index=0,
-        orientation="horizontal",
-    )
+    selected2 = option_menu(None, ["Home", "Upload", "---", "Tasks", 'Settings'], 
+        icons=['house', 'cloud-upload', None, "list-task", 'gear'], 
+        menu_icon="cast", default_index=0, orientation="horizontal")
 
-    selected3 = option_menu(
-        None,
-        ["Home", "Upload", "Tasks", "Settings"],
-        icons=["house", "cloud-upload", "list-task", "gear"],
-        menu_icon="cast",
-        default_index=0,
-        orientation="horizontal",
+    selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'], 
+        icons=['house', 'cloud-upload', "list-task", 'gear'], 
+        menu_icon="cast", default_index=0, orientation="horizontal",
         styles={
             "container": {"padding": "0!important", "background-color": "#fafafa"},
-            "icon": {"color": "orange", "font-size": "25px"},
-            "nav-link": {
-                "font-size": "25px",
-                "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#eee",
-            },
+            "icon": {"color": "orange", "font-size": "25px"}, 
+            "nav-link": {"font-size": "25px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
             "nav-link-selected": {"background-color": "green"},
-        },
-    )
-
-    disabled_menu_example = option_menu(
-        "Disabled Menu",
-        ["Home", "Unavailable", "Elsewhere"],
-        icons=["house", "gear", "list-task"],
-        menu_icon="cast",
-        default_index=0,
-        orientation="horizontal",
-        styles={
-            "container": {"padding": "0!important", "background-color": "#fafafa"},
-            "icon": {"color": "orange", "font-size": "25px"},
-            "nav-link": {
-                "font-size": "25px",
-                "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#eee",
-            },
-            "nav-link-selected": {"background-color": "green"},
-        },
-        disabled=True,
-    )
-
-    style_menu_example = option_menu(
-        "Styling",
-        ["Home", "Somewhere"],
-        icons=["house", "gear"],
-        menu_icon="cast",
-        default_index=0,
-        orientation="horizontal",
-        styles={
-            "container": {"padding": "0!important", "background-color": "#fafafa"},
-            "icon": {"color": "orange", "font-size": "25px"}, # Overrides menu-icon and option-icon unless !important
-            "menu-icon": {"color": "purple !important", "font-size": "14px"},
-            "option-icon": {"color": "blue !important", "font-size": "10px !important"},
-            "option-icon-selected": {"color": "lightblue", "font-size": "50px !important"},
-            "nav-link": {
-                "font-size": "25px",
-                "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#eee",
-            },
-            "nav-link-selected": {"background-color": "green"},
-            "nav-link-text": {"color": "rgba(100, 100, 100)"},
-            "nav-link-text-selected": {"color": "indigo !important", "filter": "brightness(80%)"},
-        },
+        }
     )
