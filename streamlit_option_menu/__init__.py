@@ -59,7 +59,7 @@ def option_menu(menu_title, options, default_index=0, menu_icon=None, icons=None
         else:    
             register_callback(key, on_change, key)
     
-    if manual_select is not None and key is None:  
+    if manual_select is not None:  
         default_index = manual_select
         
     component_value = _component_func(options=options, 
