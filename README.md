@@ -78,9 +78,12 @@ selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'],
 # 4. Manual Item Selection
 option_list = ["Home", "Upload", "Tasks", 'Settings']
 manual_select = None
-if st.session_state.get('switch_button', False):
+if st.session_state.get('menu_4', False):
     option_list_option = st.session_state['switch_button']
-    manual_select = option_list.index(option_list_option)
+    manual_select = option_list.index(option_list_option) # The manual select is the index of the list in the options
+
+if st.session_state.get('switch_button',False) and manual_select: # Check if the button was pressed and move it to the next option
+    manual_select = (manual_select + 1) % 4
     
 selected4 = option_menu(None, option_list, 
     icons=['house', 'cloud-upload', "list-task", 'gear'], 
