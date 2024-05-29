@@ -1,5 +1,10 @@
 from streamlit import session_state as _state
-from streamlit.components.v1 import components as _components
+
+try:
+    # Internal API was changed in streamlit 1.34.0
+    from streamlit.components.v1 import custom_component as _components
+except ImportError:
+    from streamlit.components.v1 import components as _components
 
 
 def _patch_register_widget(register_widget):
