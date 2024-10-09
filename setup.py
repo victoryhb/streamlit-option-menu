@@ -56,6 +56,6 @@ selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
         # By definition, a Custom Component depends on Streamlit.
         # If your component has other Python dependencies, list
         # them here.
-        "streamlit >= 0.63",
+        "streamlit >= 1.36",
     ],
 )
